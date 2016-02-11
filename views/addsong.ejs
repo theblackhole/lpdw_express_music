@@ -1,0 +1,31 @@
+<% include partials/header %>
+<h1>Add song :</h1>
+<form method="post" action="/songs/">
+    <fieldset>
+        <label for="title">Title :</label>
+        <input type="text" id="title" placeholder="Title">
+    </fieldset>
+
+    <fieldset>
+        <label for="album">Album :</label>
+        <input type="text" id="album" placeholder="Album">
+    </fieldset>
+
+    <fieldset>
+        <label for="artist">Artist :</label>
+        <input type="text" id="artist" placeholder="Artist">
+    </fieldset>
+
+    <fieldset>
+        <label for="year">Year :</label>
+        <input type="number" id="year" placeholder="Year">
+    </fieldset>
+
+    <fieldset>
+        <label for="bpm">BPM :</label>
+        <input type="number" id="bpm" placeholder="BPM">
+    </fieldset>
+
+    <input type="submit" value="Envoyer">
+</form>
+<% include partials/footer %>

@@ -1,0 +1,20 @@
+<% include partials/header %>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Titre</th>
+        <th>Artiste</th>
+        <th>Album</th>
+    </tr>
+    </thead>
+    <% for(var i=0; i < songs.length; i++) { %>
+    <tr>
+        <td><a href="/songs/<%= songs[i].id %>"><%= songs[i].title %></a></td>
+        <td><%= songs[i].artist %></td>
+        <td><%= songs[i].album %></td>
+    </tr>
+    <% } %>
+</table>
+
+<% include partials/footer %>
