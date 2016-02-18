@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
-    "start-http2": "nodemon ./bin/www-http2"
+    "start-http2": "nodemon ./bin/www-http2",
+    "start-mongodb": "gksudo 'mongod --dbpath /media/enguerran/LINUX/Apps/mongodb/data/db'",
+    "test": "./node_modules/.bin/mocha"
   },
   "dependencies": {
     "bluebird": "^3.1.5",
@@ -15,9 +17,15 @@
     "express-session": "^1.13.0",
     "http2": "^3.3.2",
     "jade": "~1.11.0",
+    "kerberos": "0.0.18",
     "lodash": "^4.0.1",
     "mongoose": "^4.3.7",
     "morgan": "~1.6.1",
     "serve-favicon": "~2.3.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5",
+    "supertest": "^1.2.0"
   }
 }
