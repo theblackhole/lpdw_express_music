@@ -49,6 +49,28 @@ router.get('/add', function(req, res) {
     else {
         res.status(406).send({err: 'Not valid type for asked ressource'});
     }
+});router.get('/me', function (req, res, next) {
+    var userID = req.user._id;
+
+    UsersService.findOneByQuery({_id: userID})
+        .then(function(user){
+            if (!user) {
+                res.status(404).send({err: 'No user found with id' + userID});
+                return;
+            }
+            SongService.find({_id: { $in: user.favoriteSongs}})
+                .then(function(songs){
+                    if (req.accepts('text/html')) {
+                        return res.render('user', {profileUser: user, favoriteSongs: songs});
+                    }
+                    if (req.accepts('application/json')) {
+                        var resp = {};
+                        resp['user'] = user;
+                        resp['songs'] = songs;
+                        return res.status(200).send(resp);
+                    }
+                });
+        });
 });
 
 router.get('/:id', function(req, res) {
@@ -65,7 +87,7 @@ router.get('/:id', function(req, res) {
                     .then(function(rating){
                         var isFavorite = false;
                         if(req.user.favoriteSongs.indexOf(req.params.id) != -1){
-                            isFavorite = true
+                            isFavorite = true;
                         }
 
                         if (req.accepts('text/html')) {

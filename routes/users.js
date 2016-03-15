@@ -2,6 +2,7 @@ var express = require('express');
 var _ = require('lodash');
 var router = express.Router();
 var UsersService = require('../services/users');
+var SongsService = require('../services/songs');
 
 /* GET users listing. */
 router.get('/', function (req, res) {
@@ -27,6 +28,50 @@ router.get('/', function (req, res) {
   else {
     res.status(406).send({err: 'Not valid type for asked ressource'});
   }
+});
+
+router.get('/myaccount', function (req, res) {
+  UsersService.findOneByQuery({_id: req.user._id})
+      .then(function(user){
+        if (!user) {
+          res.status(404).send({err: 'No user found with id' + req.user._id});
+          return;
+        }
+        SongsService.find({_id: { $in: user.favoriteSongs}})
+            .then(function(songs){
+              if (req.accepts('text/html')) {
+                return res.render('myaccount', {user: user, favoriteSongs: songs});
+              }
+              if (req.accepts('application/json')) {
+                var resp = {};
+                resp['user'] = user;
+                resp['songs'] = songs;
+                return res.status(200).send(resp);
+              }
+            });
+      });
+});
+
+router.get('/:id', function (req, res) {
+  UsersService.findOneByQuery({_id: req.params.id})
+      .then(function(user){
+        if (!user) {
+          res.status(404).send({err: 'No user found with id' + userID});
+          return;
+        }
+        SongService.find({_id: { $in: user.favoriteSongs}})
+            .then(function(songs){
+              if (req.accepts('text/html')) {
+                return res.render('user', {user: user, favoriteSongs: songs});
+              }
+              if (req.accepts('application/json')) {
+                var resp = {};
+                resp['user'] = user;
+                resp['songs'] = songs;
+                return res.status(200).send(resp);
+              }
+            });
+      });
 });
 
 router.put('/songs/favorites', function (req, res) {

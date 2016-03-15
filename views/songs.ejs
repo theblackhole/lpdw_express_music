@@ -64,8 +64,10 @@
                     <td>
                         <% if (song.bpm) { %><%=song.bpm%><% } %>
                     </td>
-                    <td class="col-md-3">
-                        <a href="" class="btn btn-default btn-sm pull-right" title="Edit <%=song.title%>">Edit</a>
+                    <td class="col-md-3">>
+                        <% if (user_admin) { %>
+                            <a href="/songs/edit/<%=song._id%>" lass="btn btn-default btn-sm pull-right" title="Edit <%=song.title%>">Edit</a> |
+                        <% } %>
                         <a href="/songs/<%=song._id%>" class="btn btn-primary btn-raised btn-sm pull-right" title="View <%=song.title%>">View</a>
                     </td>
                 </tr>
