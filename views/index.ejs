@@ -1,3 +1,67 @@
+
 <% include partials/header %>
-   <h1><%=title%></h1>
+<div class="row">
+   <h1>Welcome to SocialMusic</h1>
+</div>
+<div class="row">
+   <div class="col-md-6">
+      <div class="panel panel-primary">
+         <div class="panel-heading">
+            <h2 class="panel-title">Top 5 music</h2>
+         </div>
+         <div class="panel-body">
+            <table class="table table-striped table-hover">
+               <thead>
+                  <tr>
+                     <th>Title</th>
+                     <th>Artist</th>
+                     <th>Rating</th>
+                  </tr>
+               </thead>
+               <tbody>
+               <% topList.forEach(function(ratingSong) {%>
+               <tr>
+                  <td><a href="/songs/<%=ratingSong.song._id%>" ><%= ratingSong.song.title %></a></td>
+                  <td><%= ratingSong.song.artist %></td>
+                  <td>
+                     <% for(var i=0; i < ratingSong.avgRating; i++) {%>
+                     <i class="material-icons">&#xE838;</i>
+                     <% } %>
+                     <% for(var i=ratingSong.avgRating; i < 5; i++) {%>
+                     <i class="material-icons">&#xE83A;</i>
+                     <% } %>
+                  </td>
+               </tr>
+               <% })%>
+               </tbody>
+            </table>
+         </div>
+      </div>
+   </div>
+   <div class="col-md-6">
+      <div class="panel panel-info">
+         <div class="panel-heading">
+            <h2 class="panel-title">Latest users</h2>
+         </div>
+      <div class="panel-body">
+         <table class="table table-striped table-hover">
+            <thead>
+               <tr>
+                  <th>Name</th>
+                  <th>Username</th>
+               </tr>
+            </thead>
+            <tbody>
+            <% newestUsers.forEach(function(newestUser) {%>
+            <tr>
+               <td><a href="/users/<%=newestUser._id%>" title="View Profile"><%=newestUser.displayName%></a></td>
+               <td><%=newestUser.username%></td>
+            </tr>
+            <%})%>
+            </tbody>
+         </table>
+      </div>
+      </div>
+   </div>
+</div>
 <% include partials/footer %>

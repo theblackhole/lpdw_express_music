@@ -1,17 +1,151 @@
 <% include partials/header %>
-   <h1><%=song.title%></h1>
-   <hr/>
-   Album  : <%=song.album%><br/>
-   Artist : <%=song.artist%><br/>
-   <% if (song.year) { %>
-      Year   : <%=song.year%><br/>
-   <% } %>
-   <% if (song.bpm) { %>
-      BPM   : <%=song.bpm%><br/>
-   <% } %>
-   <br/>
-   <% if (user_admin) { %>
-    <a href="/songs/edit/<%=song._id%>">Edit</a> |
-   <% } %>
-   <a href="/songs">All Songs</a>
+<div class="row">
+   <div class="col-md-6 col-md-offset-3">
+      <div class="panel">
+         <div class="panel-heading">
+            <%if(!isFavorite){%>
+            <form action="/users/songs/favorites?_method=put" method="POST" title="Add to Favorites ?" class="form-inline text-right">
+               <input type="hidden" name="song_id" id="song_id" value="<%= song._id%>">
+               <button type="submit" class="btn btn-default btn-fab btn-fab-mini">
+                  <i class="material-icons">&#xE87E;</i>
+               </button>
+            </form>
+            <% } else { %>
+            <form action="/users/songs/favorites/remove?_method=delete" method="POST" title="Remove from Favorites ?" class="form-inline text-right">
+               <input type="hidden" name="song_id" id="song_id" value="<%= song._id%>">
+               <button type="submit" class="btn btn-danger btn-fab btn-fab-mini">
+                  <i class="material-icons">&#xE87D;</i>
+               </button>
+            </form>
+            <% } %>
+            <h2><%=song.title%> - <%=song.artist%></h2>
+         </div>
+         <div class="panel-body">
+            <div class="list-group">
+               <div class="list-group-item">
+                  <div class="row-action-primary">
+                     <i class="material-icons">&#xE405;</i>
+                  </div>
+                  <div class="row-content">
+                     <div class="least-content">
+                        <% if (user_admin) { %>
+                        <a href="/songs/edit/<%=song._id%>">Edit</a> |
+                        <% } %>
+                     </div>
+                     <h4 class="list-group-item-heading">Title</h4>
+
+                     <p class="list-group-item-text"><%=song.title%></p>
+                  </div>
+               </div>
+               <div class="list-group-separator"></div>
+               <div class="list-group-item">
+                  <div class="row-action-primary">
+                     <i class="material-icons">&#xE019;</i>
+                  </div>
+                  <div class="row-content">
+                     <div class="least-content">
+                        <% if (user_admin) { %>
+                        <a href="/songs/edit/<%=song._id%>">Edit</a> |
+                        <% } %>
+                     </div>
+                     <h4 class="list-group-item-heading">Album</h4>
+
+                     <p class="list-group-item-text"><%=song.album%></p>
+                  </div>
+               </div>
+               <div class="list-group-separator"></div>
+               <div class="list-group-item">
+                  <div class="row-action-primary">
+                     <i class="material-icons">&#xE91F;</i>
+                  </div>
+                  <div class="row-content">
+                     <div class="least-content">
+                        <% if (user_admin) { %>
+                        <a href="/songs/edit/<%=song._id%>">Edit</a> |
+                        <% } %>
+                     </div>
+                     <h4 class="list-group-item-heading">Artist</h4>
+
+                     <p class="list-group-item-text"><%=song.artist%></p>
+                  </div>
+               </div>
+               <div class="list-group-separator"></div>
+               <% if (song.year) { %>
+               <div class="list-group-item">
+                  <div class="row-action-primary">
+                     <i class="material-icons">&#xE916;</i>
+                  </div>
+                  <div class="row-content">
+                     <div class="least-content">
+                        <% if (user_admin) { %>
+                        <a href="/songs/edit/<%=song._id%>">Edit</a> |
+                        <% } %>
+                     </div>
+                     <h4 class="list-group-item-heading">Year</h4>
+
+                     <p class="list-group-item-text"><%=song.year%></p>
+                  </div>
+               </div>
+               <div class="list-group-separator"></div>
+               <% } %>
+               <% if (song.bpm) { %>
+               <div class="list-group-item">
+                  <div class="row-action-primary">
+                     <i class="material-icons">&#xE068;</i>
+                  </div>
+                  <div class="row-content">
+                     <div class="least-content">
+                        <% if (user_admin) { %>
+                        <a href="/songs/edit/<%=song._id%>">Edit</a> |
+                        <% } %>
+                     </div>
+                     <h4 class="list-group-item-heading">BPM</h4>
+
+                     <p class="list-group-item-text"><%=song.bpm%></p>
+                  </div>
+               </div>
+               <div class="list-group-separator"></div>
+               <% } %>
+               <div class="list-group-item">
+                  <div class="row-action-primary">
+                     <i class="material-icons">&#xE839;</i>
+                  </div>
+                  <div class="row-content">
+                     <h4 class="list-group-item-heading">Rating</h4>
+
+                     <p class="list-group-item-text">
+                        <% if(rating){ %>
+                           <%# rating.rating %> <%# / 5 %>
+                           <% for(var i=0; i < rating.rating; i++) {%>
+                           <i class="material-icons">&#xE838;</i>
+                           <% } %>
+                           <% for(var i=rating.rating; i < 5; i++) {%>
+                           <i class="material-icons">&#xE83A;</i>
+                           <% } %>
+                        <% } else { %>
+                     <form action="/songs/<%= song._id %>/rating" method="post" class="form-inline text-center">
+                        <div class="form-group" style="margin-top: 0">
+                           <select name="rating" id="rating" class="form-control">
+                              <option value="1">1</option>
+                              <option value="2">2</option>
+                              <option value="3">3</option>
+                              <option value="4">4</option>
+                              <option value="5">5</option>
+                           </select>
+                           / 5
+                           <input class="btn btn-primary btn-raised btn-sm" type="submit" value="Submit"/>
+                        </div>
+                     </form>
+                     <% } %>
+                  </div>
+               </div>
+               <div class="list-group-separator"></div>
+            </div>
+         </div>
+         <div class="text-center">
+            <a href="/songs" class="btn btn-info btn-raised btn-lg"><i class="material-icons">&#xE030;</i> All Songs</a>
+      </div>
+      </div>
+   </div>
+</div>
 <% include partials/footer %>

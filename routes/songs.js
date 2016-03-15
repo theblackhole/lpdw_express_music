@@ -2,6 +2,7 @@ var express = require('express');
 var _ = require('lodash');
 var router = express.Router();
 var SongService = require('../services/songs');
+var RatingService = require('../services/rating');
 
 var verifyIsAdmin = function(req, res, next) {
     if (req.isAuthenticated() && req.user.username === 'admin') {
@@ -14,10 +15,17 @@ var verifyIsAdmin = function(req, res, next) {
 
 router.get('/', function(req, res) {
     if (req.accepts('text/html') || req.accepts('application/json')) {
-        SongService.find(req.query || {})
+        var queryParams = {};
+        var hasFilter = false;
+
+        if(Object.keys(req.query).length !== 0){
+            queryParams[req.query.songFilter] = req.query.value;
+            hasFilter = true;
+        }
+        SongService.find(queryParams || {})
             .then(function(songs) {
                 if (req.accepts('text/html')) {
-                    return res.render('songs', {songs: songs});
+                    return res.render('songs', {songs: songs, songsCount: songs.length, hasFilter: hasFilter, title: req.query.value});
                 }
                 if (req.accepts('application/json')) {
                     res.status(200).send(songs);
@@ -51,15 +59,29 @@ router.get('/:id', function(req, res) {
                     res.status(404).send({err: 'No song found with id' + req.params.id});
                     return;
                 }
-                if (req.accepts('text/html')) {
-                    return res.render('song', {song: song});
-                }
-                if (req.accepts('application/json')) {
-                    return res.status(200).send(song);
-                }
+
+
+                RatingService.findOneByQuery({ username: req.user.username, song: song._id})
+                    .then(function(rating){
+                        var isFavorite = false;
+                        if(req.user.favoriteSongs.indexOf(req.params.id) != -1){
+                            isFavorite = true
+                        }
+
+                        if (req.accepts('text/html')) {
+                            return res.render('song', {song: song, rating: rating, isFavorite: isFavorite});
+                        }
+                        if (req.accepts('application/json')) {
+                            var oneSong = {
+                                song: song,
+                                rating: rating,
+                                isFavorite : isFavorite
+                            };
+                            return res.send(200, oneSong);
+                        }
+                    });
             })
             .catch(function(err) {
-                console.log(err);
                 res.status(500).send(err);
             })
         ;
@@ -75,7 +97,6 @@ router.get('/artist/:artist', function(req, res) {
             res.status(200).send(songs);
         })
         .catch(function(err) {
-            console.log(err);
             res.status(500).send(err);
         })
     ;
@@ -121,6 +142,48 @@ router.post('/', verifyIsAdmin, songBodyVerification, function(req, res) {
         })
     ;
 });
+
+router.post('/:id/rating', function(req, res) {
+    SongService.findOneByQuery({_id: req.params.id})
+        .then(function(song) {
+            if (!song) {
+                res.status(404).send({err: 'No song found with id' + req.params.id});
+                return;
+            }
+
+            var oneRating = {
+                username: req.user.username,
+                song: song._id
+            };
+
+            RatingService.findOneByQuery(oneRating)
+                .then(function(rating) {
+                    if (rating) {
+                        return res.status(409).send({err: "You've already voted"});
+                    }
+                    oneRating.rating = req.body.rating;
+                    RatingService.create(oneRating)
+                        .then(function() {
+                            if (req.accepts('text/html')) {
+                                return res.redirect('/songs/' + song._id);
+                            }
+                            else {
+                                return res.status(201).send(song);
+                            }
+                        })
+                        .catch(function(err) {
+                            res.status(500).send(err);
+                        });
+                })
+                .catch(function(err) {
+                    res.status(500).send(err);
+                });
+        })
+        .catch(function(err) {
+            res.status(500).send(err);
+        });
+});
+
 
 router.delete('/', verifyIsAdmin, function(req, res) {
     SongService.deleteAll()

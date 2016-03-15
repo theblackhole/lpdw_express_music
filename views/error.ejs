@@ -1,5 +1,17 @@
 <% include partials/header %>
-   <h1><%=message%></h1>
-   <h2><%=error.status%></h2>
-   <pre><%=error.stack%></pre>
+   <div class="row">
+      <div class="col-md-12">
+         <div class="alert alert-danger">
+            <%=message%>
+         </div>
+         <div class="panel panel-info">
+            <div class="panel-heading">
+               <h3 class="panel-title">Status : <%=error.status || "no status"%></h3>
+            </div>
+            <div class="panel-body">
+               <pre><%=error.stack%></pre>
+            </div>
+         </div>
+      </div>
+   </div>
 <% include partials/footer %>

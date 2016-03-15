@@ -52,12 +52,14 @@ app.use(passport.session());
 var verifyAuth = function(req, res, next) {
     res.locals.user_session = false;
     res.locals.user_admin = false;
+    res.locals.user_name = false;
     if (req.originalUrl === '/signup' || req.originalUrl === '/login') {
         return next();
     }
     if (req.isAuthenticated()) {
         res.locals.user_session = true;
         res.locals.user_admin = (req.user.username === 'admin');
+        res.locals.user_name = req.user.username;
         return next();
     }
     if (req.accepts('text/html')) {

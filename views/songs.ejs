@@ -1,31 +1,78 @@
 <% include partials/header %>
 
-<table border="1">
-    <thead>
-    <tr>
-        <th>Title</th>
-        <th>Album</th>
-        <th>Artist</th>
-        <th>Year</th>
-        <th>BPM</th>
-    </tr>
-    </thead>
-    <tbody>
-    <% songs.forEach(function(song) {%>
-        <tr>
-            <td>
-                <a href="/songs/<%=song._id%>"><%=song.title%></a>
-            </td>
-            <td><%=song.album%></td>
-            <td><%=song.artist%></td>
-            <td>
-                <% if (song.year) { %><%=song.year%><% } %>
-            </td>
-            <td>
-                <% if (song.bpm) { %><%=song.bpm%><% } %>
-            </td>
-        </tr>
-    <% }) %>
-    </tbody>
-</table>
+<div class="row">
+    <div class="col-md-6 col-md-offset-3 panel">
+        <form action="/songs" class="form-inline" method="GET">
+            <div class="form-group col-md-6" style="margin-top: 10px;">
+                <label for="songFilter" style="width: 40%;">Filtrer par:</label>
+                <select class="form-control" name="songFilter" id="songFilter" style="width: 50%;">
+                    <option id="title" name="title" value="title">Titre</option>
+                    <option id="album" name="album" value="album">Album</option>
+                    <option id="artist" name="artist" value="artist">Artiste</option>
+                    <option id="year" name="year" value="year">Année</option>
+                    <option id="bpm" name="bpm" value="bpm">BPM</option>
+                </select>
+            </div>
+            <div class="form-group label-floating col-md-6" style="margin-top: 10px;">
+                <div class="input-group">
+                    <input type="text" name="value" class="form-control" value="<%= title || "" %>" placeholder="Rechercher" required/>
+                    <span class="input-group-btn">
+                      <button type="submit" class="btn btn-fab btn-primary btn-fab-mini">
+                          <i class="material-icons">&#xE8B6;</i>
+                      </button>
+                    </span>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <h4 class="pull-left"><%= songsCount || "Aucune"  %> musique(s) trouvée(s)</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+    <% if (hasFilter) { %>
+    <h5 class="pull-left"><a href="/songs" class="text-danger"><i class="material-icons">&#xE5CD;</i> Effacer les filtres</a></h5>
+    <% } %>
+    <% if (user_admin) { %>
+    <a class="btn btn-default pull-right" href="/songs/add">Ajouter une musique</a>
+    <%}%>
+        <table class="table table-striped table-hover panel">
+            <thead class="panel-heading">
+            <tr>
+                <th>Title</th>
+                <th>Album</th>
+                <th>Artist</th>
+                <th>Year</th>
+                <th>BPM</th>
+                <th class="text-center">Action</th>
+            </tr>
+            </thead>
+            <tbody class="panel-body">
+            <% songs.forEach(function(song) {%>
+                <tr>
+                    <td>
+                        <a href="/songs/<%=song._id%>"><%=song.title%></a>
+                    </td>
+                    <td><%=song.album%></td>
+                    <td><%=song.artist%></td>
+                    <td>
+                        <% if (song.year) { %><%=song.year%><% } %>
+                    </td>
+                    <td>
+                        <% if (song.bpm) { %><%=song.bpm%><% } %>
+                    </td>
+                    <td class="col-md-3">
+                        <a href="" class="btn btn-default btn-sm pull-right" title="Edit <%=song.title%>">Edit</a>
+                        <a href="/songs/<%=song._id%>" class="btn btn-primary btn-raised btn-sm pull-right" title="View <%=song.title%>">View</a>
+                    </td>
+                </tr>
+            <% }) %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
 <% include partials/footer %>

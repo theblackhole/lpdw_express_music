@@ -1,20 +1,69 @@
-<fieldset>
-    <label for="title" title="<sup>*</sup>required">Title<sup>*</sup> :</label>
-    <input class="form-control" type="text" id="title" name="title" value="<%=song.title%>" placeholder="Title" title="<sup>*</sup>required" required>
-</fieldset>
-<fieldset>
-    <label for="album" title="<sup>*</sup>required">Album<sup>*</sup> :</label>
-    <input class="form-control" type="text" id="album" name="album" value="<%=song.album%>" placeholder="Album" title="<sup>*</sup>required" required>
-</fieldset>
-<fieldset>
-    <label for="artist" title="<sup>*</sup>required">Artist<sup>*</sup> :</label>
-    <input class="form-control" type="text" id="artist" name="artist" value="<%=song.artist%>" placeholder="Artist" title="<sup>*</sup>required" required>
-</fieldset>
-<fieldset>
-    <label for="year">Year :</label>
-    <input class="form-control" type="number" id="year" name="year" value="<%=song.year%>" placeholder="XXXX" maxlength="4">
-</fieldset>
-<fieldset>
-    <label for="BPM">BPM :</label>
-    <input class="form-control" type="number" id="bpm" name="bpm" value="<%=song.bpm%>" placeholder="XXX" maxlength="3">
-</fieldset>
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="panel">
+            <% if (song) { %>
+            <div class="panel-heading">
+                <h2><%=song.title%> - <%=song.artist%> <small>Edit</small></h2>
+            </div>
+            <% } %>
+            <div class="panel-body">
+                <div class="list-group">
+                    <div class="list-group-item form-group" style="margin-top: 0;">
+                        <div class="row-action-primary">
+                            <i class="material-icons">&#xE405;</i>
+                        </div>
+                        <div class="row-content">
+                            <h4 class="list-group-item-heading" title="Required">Title <sup>*</sup></h4>
+
+                            <p class="list-group-item-text"><input class="form-control" type="text" id="title" name="title" value="<%=song.title%>" placeholder="Title" title="Required" required></p>
+                        </div>
+                    </div>
+                    <div class="list-group-item form-group">
+                        <div class="row-action-primary">
+                            <i class="material-icons">&#xE019;</i>
+                        </div>
+                        <div class="row-content">
+                            <h4 class="list-group-item-heading" title="Required">Album <sup>*</sup></h4>
+
+                            <p class="list-group-item-text"><input class="form-control" type="text" id="album" name="album" value="<%=song.album%>" placeholder="Album" title="Required" required></p>
+                        </div>
+                    </div>
+                    <div class="list-group-item form-group">
+                        <div class="row-action-primary">
+                            <i class="material-icons">&#xE91F;</i>
+                        </div>
+                        <div class="row-content">
+                            <h4 class="list-group-item-heading" title="Required">Artist<sup>*</sup></h4>
+
+                            <p class="list-group-item-text"><input class="form-control" type="text" id="artist" name="artist" value="<%=song.artist%>" placeholder="Artist" title="Required" required></p>
+                        </div>
+                    </div>
+                    <div class="list-group-item form-group">
+                        <div class="row-action-primary">
+                            <i class="material-icons">&#xE916;</i>
+                        </div>
+                        <div class="row-content">
+                            <h4 class="list-group-item-heading">Year</h4>
+
+                            <p class="list-group-item-text"><input class="form-control" type="number" id="year" name="year" value="<%=song.year%>" placeholder="XXXX" maxlength="4"></p>
+                        </div>
+                    </div>
+                    <div class="list-group-item form-group">
+                        <div class="row-action-primary">
+                            <i class="material-icons">&#xE068;</i>
+                        </div>
+                        <div class="row-content">
+                            <h4 class="list-group-item-heading">BPM</h4>
+
+                            <p class="list-group-item-text"><input class="form-control" type="number" id="bpm" name="bpm" value="<%=song.bpm%>" placeholder="XXX" maxlength="3"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                <input class="btn btn-primary btn-raised" type="submit" value="Save"/>
+                <a href="javascript:window.history.go(-1);" class="btn btn-warning btn-lg">Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>
