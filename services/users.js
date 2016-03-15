@@ -6,6 +6,10 @@ exports.findOneByQuery = function(query) {
     return Users.findOneAsync(query);
 };
 
+exports.find = function(query) {
+    return Users.findAsync(query);
+};
+
 exports.createUser = function(user) {
     return Users.createAsync(user);
 };
