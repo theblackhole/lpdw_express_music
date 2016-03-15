@@ -1,10 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Social Music</title>
-    <!-- HTML5 shim, for IE6-8 support of HTML elements -->
+ <head>
+   <meta charset="utf-8">
+   <title>Social Music</title>
+   <!-- HTML5 shim, for IE6-8 support of HTML elements... -->
+   <!--[if lt IE 9]>
+     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+   <![endif]-->
+     <link type="text/css" rel="stylesheet" href="stylesheets/vendor/bootstrap.min.css">
+     <link type="text/css" rel="stylesheet" href="stylesheets/vendor/bootstrap-material-design.min.css">
+     <link type="text/css" rel="stylesheet" href="stylesheets/vendor/ripples.min.css">
+     <script type="text/javascript" src="javascripts/vendor/jquery.min.js"></script>
+     <script type="text/javascript" src="javascripts/vendor/bootstrap.min.js"></script>
+     <script type="text/javascript" src="javascripts/vendor/material.min.js"></script>
+     <script type="text/javascript" src="javascripts/vendor/ripples.min.js"></script>
+     <script>$( document ).ready(function() { $.material.init(); })</script>
+ </head>
+ <body>
+    <!-- ... but still recommend to get a better browser ;) -->
     <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-</head>
+    <div class="container">
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">Social Music</a>
+                </div>
+                <div class="navbar-collapse collapse navbar-inverse-collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="javascript:void(0)">Musique-thèque</a></li>
+                        <li><a href="javascript:void(0)">Réseau d'users</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <% if (user_session) {%>
+                        <li class="dropdown">
+                            <a href="javascript:void(0)" data-target="#" class="dropdown-toggle" data-toggle="dropdown">John Doe
+                                <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="javascript:void(0)">Mon Compte</a></li>
+                                <li><a href="/logout">Logout</a></li>
+                            </ul>
+                        </li>
+                        <%} else {%>
+                        <li><a href="/signup">S'inscrire</a></li>
+                        <li><a href="/login">Login</a></li>
+                        <% } %>
+                    </ul>
+                </div>
+            </div>
+        </nav>

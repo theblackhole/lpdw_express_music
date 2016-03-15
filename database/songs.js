@@ -1,5 +1,6 @@
 'use strict'
 var mongoose = require('mongoose');
+
 var songSchema = mongoose.Schema({
     title: {type: String, required: true},
     album: {type: String, required: true},
@@ -7,4 +8,5 @@ var songSchema = mongoose.Schema({
     year: Number,
     bpm: Number
 });
+
 module.exports = mongoose.model('song', songSchema);
